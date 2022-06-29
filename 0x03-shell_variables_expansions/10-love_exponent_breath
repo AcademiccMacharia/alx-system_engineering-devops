@@ -1,2 +1,2 @@
 #!/bin/bash
-echo $(($POWER**$LOVE))
+export BREATH=4 export LOVE=3 | echo $(($BREATH**$LOVE))
