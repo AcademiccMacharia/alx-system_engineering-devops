@@ -7,7 +7,10 @@ In this directory, I seek to look at networks. It will entail content on OSI, LA
 
 The files here are scripts that answer the questions asked regarding networks.
 
+Randoms:
 
+What do you think is the most important job in a software company?
+![dir meme](https://pbs.twimg.com/media/C4uVCMaUEAAcAA-?format=jpg&name=small)
 
 
 
