@@ -8,7 +8,7 @@ Modules of **System engineering** and **DevOps**, carried out during **Full Stac
 
 #### Technologies used 👨💻
 
-Scipts wriiten in Bash
-Tested on Ubuntu LTS 20.04
+1. Scipts wriiten in Bash
+2. Tested on Ubuntu LTS 20.04
 
 In this repository, I take a DEEP DIVE into system engineering and devops where I get to read as well as practice all areas around system engineering and devops. Most files in this directory are written as scripts that are executable.
