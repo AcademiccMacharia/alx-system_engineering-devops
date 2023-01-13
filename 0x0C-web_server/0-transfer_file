@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Check if the correct number of parameters are passed
+if [[ $# -lt 4 ]]; then
+  echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+  exit 1
+fi
+
+# Set variables for file path, server IP, username, and SSH key path
+file_path=$1
+server_ip=$2
+username=$3
+ssh_key_path=$4
+
+# Transfer the file using SCP, with strict host key checking disabled
+# The -o option is used to disable strict host key checking
+# The -i option is used to specify the path to the SSH private key
+# The file will be transferred to the user's home directory on the server
+scp -o StrictHostKeyChecking=no -i $ssh_key_path $file_path $username@$server_ip:~/
+
