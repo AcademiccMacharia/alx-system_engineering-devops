@@ -1,7 +1,32 @@
 #!/usr/bin/env bash
-# Script that configures Nginx server with a custom header
-
+# configure Nginx so that it's HTTP response contains a custom header (on web-01 and web-02)
+# The name of the cusom HTTP header must be X-Served-By
+# The value of the custom HTTP header must be the hostname the server Nginx is running on
 apt-get update
 apt-get -y install nginx
-sed -i "/server_name _;/a add_header X-Served-By '$HOSTNAME';" /etc/nginx/sites-available/default
+
+# Configure firewall to alow request through port 80
+ufw allow "Nginx HTTP"
+
+mkdir -p /var/www/html/
+mkdir -p /var/www/error/
+
+touch /var/www/html/index.html
+touch /var/www/error/error_404.html
+
+chown -R "$USER":"$USER" /var/www/html/index.html
+chown -R "$USER":"$USER" /var/www/error/error_404.html
+
+echo "Hello World!" > /var/www/html/index.html
+echo "Ceci n'est pas une page" > /var/www/error/error_404.html
+
+# code to configure redirect for a single page(/redirect_me) and add header to display hostname
+string_for_replacement="server_name _;\n\tadd_header X-Served-By \$hostname;\n\trewrite ^\/redirect_me https:\/\/https:\/\/github.com\/AcademiccMacharia permanent;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+
+# code to configure redirect for 404 error page
+string_for_replacement="listen 80 default_server;\n\terror_page 404 \/error_404.html;\n\tlocation = \/error_404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/listen 80 default_server;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+
 service nginx restart
+
