@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#Script that ensures Nginx is running and listening on port 80
+sudo apt-get update
+sudo apt-install nginx
+sudo service apache2 stop
+nginx
