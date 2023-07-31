@@ -2,7 +2,7 @@
 
 -------------------
 
-![img]("https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/271/B4eeypV.jpg")
+![img](https://s3.amazonaws.com/intranet-projects-files/holbertonschool-sysadmin_devops/271/B4eeypV.jpg)
 
 
 This directory seeks to deepen my debugging skills, helping me be able to find problems and fix them.
