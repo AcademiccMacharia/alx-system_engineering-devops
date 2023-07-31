@@ -3,4 +3,6 @@
 sudo apt-get update
 sudo apt-install nginx
 sudo service apache2 stop
+sed -i "s/listen 8080 default_server;/listen 80 default_server;/" /etc/nginx/sites-enabled/default
 nginx
+service nginx restart
