@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # configure Nginx so that it's HTTP response contains a custom header (on web-01 and web-02)
-# The name of the cusom HTTP header must be X-Served-By
+# The name of the custom HTTP header must be X-Served-By
 # The value of the custom HTTP header must be the hostname the server Nginx is running on
+
 apt-get update
 apt-get -y install nginx
 
-# Configure firewall to alow request through port 80
+# Configure firewall to allow requests through port 80
 ufw allow "Nginx HTTP"
 
 mkdir -p /var/www/html/
@@ -20,13 +21,22 @@ chown -R "$USER":"$USER" /var/www/error/error_404.html
 echo "Hello World!" > /var/www/html/index.html
 echo "Ceci n'est pas une page" > /var/www/error/error_404.html
 
-# code to configure redirect for a single page(/redirect_me) and add header to display hostname
-string_for_replacement="server_name _;\n\tadd_header X-Served-By \$hostname;\n\trewrite ^\/redirect_me https:\/\/https:\/\/github.com\/AcademiccMacharia permanent;"
-sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+# Check if custom header and redirect for /redirect_me already exist in the Nginx config
+if ! grep -q "X-Served-By" /etc/nginx/sites-enabled/default; then
+    # Add custom header to Nginx config
+    sed -i "/server_name _;/a \\\tadd_header X-Served-By $hostname;" /etc/nginx/sites-enabled/default
+fi
 
-# code to configure redirect for 404 error page
-string_for_replacement="listen 80 default_server;\n\terror_page 404 \/error_404.html;\n\tlocation = \/error_404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
-sudo sed -i "s/listen 80 default_server;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+if ! grep -q "rewrite ^/redirect_me" /etc/nginx/sites-enabled/default; then
+    # Add redirect for /redirect_me to Nginx config
+    sed -i "/server_name _;/a \\\trewrite ^\/redirect_me https:\/\/github.com\/AcademiccMacharia permanent;" /etc/nginx/sites-enabled/default
+fi
+
+# Check if redirect for 404 error page already exists in the Nginx config
+if ! grep -q "error_page 404 /error_404.html" /etc/nginx/sites-enabled/default; then
+    # Add redirect for 404 error page to Nginx config
+    sed -i "/listen 80 default_server;/a \\\terror_page 404 \/error_404.html;\n\tlocation = \/error_404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}" /etc/nginx/sites-enabled/default
+fi
 
 service nginx restart
 
